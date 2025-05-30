@@ -1,101 +1,117 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monastero di San Maurizio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f4f4f4;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audioguide Milano</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    .container {
-      text-align: center;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            text-align: center;
+        }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
+        .menu-container {
+            display: flex;
+            gap: 30px; /* Spazio tra i bottoni */
+            flex-wrap: wrap; /* Permette ai bottoni di andare a capo su schermi piccoli */
+            justify-content: center;
+        }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 10px;
-      transition: background-color 0.3s ease;
-    }
+        .audio-button {
+            background-color: #FF8C00; /* Arancione */
+            color: white;
+            border: none;
+            border-radius: 25px; /* Bordi arrotondati */
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none; /* Rimuove la sottolineatura per i link */
+            display: inline-flex; /* Permette l'allineamento del testo e padding */
+            align-items: center;
+            justify-content: center;
+            min-width: 200px; /* Larghezza minima per i bottoni */
+            text-align: center;
+        }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+        .audio-button:hover {
+            background-color: #E07B00; /* Arancione più scuro al passaggio del mouse */
+            transform: translateY(-3px); /* Effetto leggero di sollevamento */
+        }
 
-    .image-container {
-      display: none;
-      margin-top: 20px;
-    }
+        .audio-button:active {
+            background-color: #C16C00; /* Arancione ancora più scuro al click */
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-  </style>
+        /* Stile per il lettore audio nascosto */
+        #audioPlayer {
+            display: none; /* Lo nascondiamo, verrà controllato via JavaScript */
+        }
+
+        /* Media queries per schermi più piccoli */
+        @media (max-width: 600px) {
+            .menu-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .audio-button {
+                width: 90%; /* Occupa quasi tutta la larghezza su schermi piccoli */
+                max-width: 300px; /* Limita la larghezza massima */
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Monastero di San Maurizio</h1>
 
-    <button id="autoguidaButton">Ascolta l'Autoguida</button>
-    <button id="immaginiButton">Visualizza Immagini</button>
+    <h1>Scegli la tua Audioguida</h1>
 
-    <!-- Audio player -->
-    <audio id="audioPlayer" controls style="display: none;">
-      <source src="autoguida.mp3" type="audio/mp3">
-      Il tuo browser non supporta l'elemento audio.
-    </audio>
-
-    <!-- Image container -->
-    <div class="image-container" id="imageContainer">
-      <img src="monastero1.jpg" alt="Immagine 1 del Monastero">
-      <img src="monastero2.jpg" alt="Immagine 2 del Monastero">
-      <img src="monastero3.jpg" alt="Immagine 3 del Monastero">
+    <div class="menu-container">
+        <button class="audio-button" onclick="playAudio('Cenacolo.mp3')">
+            Audioguida: Il Cenacolo
+        </button>
+        <button class="audio-button" onclick="playAudio('Ambrogio.mp3')">
+            Audioguida: Sant'Ambrogio
+        </button>
     </div>
-  </div>
 
-  <script>
-    // Ottieni i riferimenti agli elementi
-    const autoguidaButton = document.getElementById('autoguidaButton');
-    const immaginiButton = document.getElementById('immaginiButton');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const imageContainer = document.getElementById('imageContainer');
+    <audio id="audioPlayer"></audio>
 
-    // Funzione per avviare l'autoguida
-    autoguidaButton.addEventListener('click', function() {
-      audioPlayer.style.display = 'block';  // Mostra il lettore audio
-      imageContainer.style.display = 'none';  // Nasconde le immagini
-      audioPlayer.play();  // Avvia l'audio
-    });
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
 
-    // Funzione per visualizzare le immagini
-    immaginiButton.addEventListener('click', function() {
-      audioPlayer.style.display = 'none';  // Nasconde il lettore audio
-      imageContainer.style.display = 'block';  // Mostra le immagini
-    });
-  </script>
+        function playAudio(audioFile) {
+            audioPlayer.src = audioFile; // Imposta la sorgente dell'audio
+            audioPlayer.play() // Avvia la riproduzione
+                .catch(error => {
+                    console.error("Errore durante la riproduzione audio:", error);
+                    alert("Impossibile riprodurre l'audio. Potrebbe essere necessario interagire con la pagina prima di avviare l'audio.");
+                });
+        }
+
+        // Funzione per fermare l'audio se si vuole aggiungere un tasto stop
+        function stopAudio() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0; // Riporta l'audio all'inizio
+        }
+    </script>
+
 </body>
 </html>
